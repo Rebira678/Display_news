@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
 import NewsItem from "./NewsItem";
 
-// NewsBoard.jsx
-const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${
-  import.meta.env.VITE_API_KEY
-}`;
-
 const NewsBoard = ({ category }) => {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    console.log("Fetching category:", category); // 👈 check category
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${
+    if (!category) return;
+
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${
       import.meta.env.VITE_API_KEY
     }`;
+    console.log("Fetching category:", category);
+    console.log("URL:", url);
+
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Fetched data:", data); // 👈 check response
+        console.log("Fetched data:", data);
         setArticles(data.articles || []);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Fetch error:", err));
   }, [category]);
 
   return (
